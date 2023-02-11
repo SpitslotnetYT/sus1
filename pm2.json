@@ -1,0 +1,13 @@
+{
+	"apps": [{
+		"name": "support-bot",
+		"cwd": "./",
+		"script": "src/index.js"
+	}],
+	"deploy": {
+		"production": {
+			"repo": "git@github.com:BuildTheEarth/main-bot.git",
+			"fetch": "all"
+		}
+	}
+}

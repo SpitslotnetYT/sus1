@@ -1,0 +1,28 @@
+name: Docker Publish
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Docker login
+      env:
+        DOCKER_USER: ${{secrets.DOCKER_USER}}
+        DOCKER_PASSWORD: ${{secrets.DOCKER_PASSWORD}}
+      run: |
+        docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
+    - name: Build the Docker image
+      run: docker build . --file Dockerfile --tag buildtheearth/support-bot:$(git rev-parse --short HEAD) --tag buildtheearth/support-bot:latest
+    - name: Docker push tag
+      run: docker push buildtheearth/support-bot:$(git rev-parse --short HEAD)
+    - name: Docker push latest
+      run: docker push buildtheearth/support-bot:latest
